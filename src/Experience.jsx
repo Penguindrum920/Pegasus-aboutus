@@ -1,7 +1,6 @@
 // src/Experience.jsx
 
 import { useMatcapTexture, Center, Text3D, OrbitControls } from '@react-three/drei'
-import { Perf } from 'r3f-perf'
 import { useEffect, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
@@ -18,7 +17,12 @@ const material = new THREE.MeshMatcapMaterial()
 
 export default function Experience({ onAboutClick, isClicked }) {
     const objects = useRef([]);
-    const { gl } = useThree();
+    const { gl, viewport } = useThree(); // Get viewport to make scene responsive
+
+    // --- RESPONSIVE SCALING ---
+    // Calculate a scale factor based on the screen's width.
+    // The scene will be full size (1) on wide screens and shrink on narrow ones.
+    const scale = Math.min(1, viewport.width / 6);
 
     const [matcapTexture] = useMatcapTexture('8CAEBC_3A4443_506463_DAEFEF', 256)
 
@@ -60,8 +64,8 @@ export default function Experience({ onAboutClick, isClicked }) {
     };
 
     return (
-        <>
-            {/*<Perf position="top-left" />*/}
+        // Wrap everything in a group and apply the responsive scale
+        <group scale={scale}>
             <OrbitControls makeDefault />
 
             <Center>
@@ -106,6 +110,6 @@ export default function Experience({ onAboutClick, isClicked }) {
                     />
                 );
             })}
-        </>
+        </group>
     );
 }
