@@ -6,31 +6,18 @@ import Experience from './Experience.jsx';
 
 export default function App() {
     const aboutRef = useRef(null);
-    const containerRef = useRef(null); // 1. Add a ref for the main container
     const [isClicked, setIsClicked] = useState(false);
 
     const handleAboutClick = () => {
         setIsClicked(true);
-
-        // 2. Update the scroll logic
-        if (aboutRef.current && containerRef.current) {
-            // Instead of scrollIntoView, we use scrollTo for precision
-            containerRef.current.scrollTo({
-                top: aboutRef.current.offsetTop, // Get the exact top position of the about section
-                behavior: 'smooth'
-            });
+        if (aboutRef.current) {
+            aboutRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     };
 
     return (
-        // Attach the new ref to the main scrolling div
-        <div ref={containerRef} style={{
-            position: 'relative',
-            height: '100vh', // Changed from 200vh as the parent body/html is now the scroller
-            overflowY: 'scroll',
-            scrollSnapType: 'y mandatory'
-        }}>
-            <div style={{ height: '100vh', position: 'relative', scrollSnapAlign: 'start' }}>
+        <div style={{ position: 'relative', height: '200vh' }}>
+            <div style={{ height: '100vh', position: 'relative' }}>
                 <Canvas
                     camera={{
                         fov: 45,
@@ -44,7 +31,6 @@ export default function App() {
             </div>
             
             <section
-                id="about-us-section"
                 ref={aboutRef}
                 style={{
                     height: '100vh',
@@ -55,15 +41,37 @@ export default function App() {
                     backgroundColor: 'rgb(4, 5, 14)',
                     color: 'white',
                     textAlign: 'center',
-                    padding: '2rem',
-                    scrollSnapAlign: 'start'
+                    padding: '2rem'
                 }}
             >
-                <div style={{ maxWidth: '800px', opacity: isClicked ? 1 : 0, transition: 'opacity 1s ease-in-out 1s' }}>
-                    <h2 style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>Our Motto</h2>
-                    <p style={{ fontSize: '1.5rem', lineHeight: '1.6' }}>
-                        Innovating the future, one byte at a time.
-                    </p>
+                {/* 2D Content: Vision and Mission */}
+                <div style={{ 
+                    maxWidth: '1200px',
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    textAlign: 'left',
+                    opacity: isClicked ? 1 : 0,
+                    transition: 'opacity 1s ease-in-out 1s'
+                }}>
+                    {/* Vision Section */}
+                    <div style={{ flex: '1', padding: '0 2rem' }}>
+                        <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✨ Vision</h3>
+                        <p style={{ fontSize: '1.2rem', lineHeight: '1.6' }}>
+                            “To be a hub of innovation and collaboration where students explore, create, and excel in web development and cloud technologies, empowering the next generation of tech leaders.”
+                        </p>
+                    </div>
+
+                    {/* Mission Section */}
+                    <div style={{ flex: '1', padding: '0 2rem' }}>
+                        <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🚀 Mission</h3>
+                        <ul style={{ listStyleType: 'none', padding: '0', margin: '0' }}>
+                            <li style={{ fontSize: '1.2rem', lineHeight: '1.6', marginBottom: '1rem' }}>To cultivate technical expertise in web development and cloud computing through hands-on projects, workshops, and knowledge sharing.</li>
+                            <li style={{ fontSize: '1.2rem', lineHeight: '1.6', marginBottom: '1rem' }}>To foster a collaborative learning environment that encourages creativity, problem-solving, and teamwork.</li>
+                            <li style={{ fontSize: '1.2rem', lineHeight: '1.6', marginBottom: '1rem' }}>To bridge the gap between academic learning and industry practices by organizing hackathons, guest lectures, and mentorship programs.</li>
+                            <li style={{ fontSize: '1.2rem', lineHeight: '1.6' }}>To inspire students to build impactful solutions that leverage technology for real-world challenges.</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
         </div>
